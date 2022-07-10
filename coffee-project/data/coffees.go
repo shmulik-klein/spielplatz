@@ -1,6 +1,10 @@
 package data
 
-import "time"
+import (
+	"encoding/json"
+	"io"
+	"time"
+)
 
 type CoffeeCup struct {
 	ID        int    `json:"id"`
@@ -8,11 +12,17 @@ type CoffeeCup struct {
 	DrinkedOn string `json:"drinked_on"`
 }
 
-func GetCoffees() []*CoffeeCup {
+type CoffeeCups []*CoffeeCup
+
+func (c *CoffeeCups) ToJSON(w io.Writer) error {
+	return json.NewEncoder(w).Encode(c)
+}
+
+func GetCoffees() CoffeeCups {
 	return coffeeList
 }
 
-var coffeeList = []*CoffeeCup{
+var coffeeList = CoffeeCups{
 	{
 		ID:        1,
 		Name:      "first_cup",
